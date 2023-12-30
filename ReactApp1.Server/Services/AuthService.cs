@@ -97,14 +97,14 @@ namespace ReactApp1.Server.Services
                 RefreshToken refreshTkn;
                 if (userExist.RefreshToken is null)
                 {
-                    refreshTkn = new RefreshToken { CreatedAt = DateTime.UtcNow, Token=refreshToken, RefreshTokenExpiry=DateTime.UtcNow.AddMinutes(3)};
+                    refreshTkn = new RefreshToken { CreatedAt = DateTime.UtcNow, Token=refreshToken, RefreshTokenExpiry=DateTime.UtcNow.AddMinutes(4)};
                     userExist.RefreshToken=refreshTkn;
                     
                 }
                 else
                 {
                     refreshTkn = userExist.RefreshToken;
-                refreshTkn.RefreshTokenExpiry = DateTime.UtcNow.AddMinutes(3);
+                refreshTkn.RefreshTokenExpiry = DateTime.UtcNow.AddMinutes(4);
                 refreshTkn.Token = refreshToken;
                     refreshTkn.IsRevoked = false;
                     refreshTkn.CreatedAt=DateTime.UtcNow;
@@ -156,7 +156,7 @@ namespace ReactApp1.Server.Services
 
 
                 var refreshtoken = user.RefreshToken;
-                refreshtoken.RefreshTokenExpiry = DateTime.Now.AddMinutes(4);
+                refreshtoken.RefreshTokenExpiry = DateTime.UtcNow.AddMinutes(4);
                 refreshtoken.Token = await _jwtService.GenerateRefreshTokenAsync();
                 var accessToken = await _jwtService.GenerateTokenAsync(principal.Claims);
                 await _context.SaveChangesAsync();

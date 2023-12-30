@@ -1,12 +1,21 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import  AuthService  from "../services/auth.service";
-
+import { useNavigate } from "react-router-dom";
 
 
 
 
 
 const Register = () => {
+
+    const navigate = useNavigate();
+    const token = localStorage.getItem("accessToken");
+    if (token != null && token != "undefined") {
+        useEffect(() => {
+            navigate("/Dashboard");
+        })
+    }
+
 
     const [email, onChangeEmail] = useState("");
     const [password, onChangePassword] = useState("");
@@ -40,7 +49,7 @@ const Register = () => {
 
 
         //fix cross origin 
-        AuthService.register() 
+        AuthService.register(firstname,lastname,email,password,cpassword) 
             .then(response => {
                 console.log(response)
             }, error => {
@@ -51,8 +60,9 @@ const Register = () => {
    
 
     return (
-        
+       
         <div className="row">
+        Home
             <div className="col">
                 <form method="post">
                     <div className="form-group">

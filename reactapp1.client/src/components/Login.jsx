@@ -1,9 +1,19 @@
 import authService from "../services/auth.service";
+import { useEffect } from "react";
 
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+
+    //if Already Logged in then redirect 
+    const navigate = useNavigate();
+    const token = localStorage.getItem("accessToken");
+    if (token!=null && token !="undefined") {
+        useEffect(() => {
+            navigate("/Dashboard");
+        })
+    }
 
     const [email, onChangeEmail] = useState("");
     const [password, onChangePassword] = useState("");
@@ -19,13 +29,26 @@ const Login = () => {
     }
 
     function Login() {
-        authService.login(email, password);
+        authService.login(email, password)
+            .then(res => {
+                if (res) {
+
+                    navigate("/Dashboard");
+
+                }
+
+            })
+            .catch(error => { console.log(error) })
+
     }
+
+
 
     return (
 
 
         <div className="row">
+            Home
             <div className="col">
                 <form method="post">
 

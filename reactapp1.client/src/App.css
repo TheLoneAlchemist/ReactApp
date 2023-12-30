@@ -17,3 +17,13 @@ th, td {
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
+#navlinks{
+    list-style-type:none;
+    display:flex;
+}
+#navlinks > li{
+    margin:5px;
+    padding:5px;
+    border: 1px dotted red;
+}

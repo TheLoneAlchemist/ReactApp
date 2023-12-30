@@ -19,7 +19,7 @@ namespace ReactApp1.Server.Areas.Admin.Controllers
             _authService = authService;
         }
         [HttpPost]
-        public async Task<IActionResult> Register([FromForm] RegisterDTO registerDTO)
+        public async Task<IActionResult> Register( RegisterDTO registerDTO)
         {
 
             if (registerDTO == null)
