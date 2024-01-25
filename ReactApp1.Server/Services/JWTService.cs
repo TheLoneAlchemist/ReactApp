@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ReactApp1.Server.Services
 {
-    public class JWTService:IJWTService
+    public class JWTService : IJWTService
     {
         private readonly IConfiguration _configuration;
 
@@ -79,7 +79,7 @@ namespace ReactApp1.Server.Services
 
             return tokenHandler.ValidateToken(Token, tokenValidateParameters, out _);
 
-           
+
         }
     }
 }

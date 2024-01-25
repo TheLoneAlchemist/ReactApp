@@ -1,6 +1,7 @@
 
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
+import Logout from '../components/Logout';
 
 
 const baseURL = "https://localhost:7139/";
@@ -43,11 +44,11 @@ api.interceptors.response.use(
                     return Promise.reject("Refreshtoken is undefined!");
                 }
 
-                const response = await axios.post(baseURL + 'Account/Refresh', { refreshTkn, accessTkn });
-                console.log(response);
+                const response = await axios.post(baseURL + 'Account/Refresh', { RefreshToken: refreshTkn, AccessToken: accessTkn });
+                console.log("Response in Refresh endpoint: "+response);
                 
                 const { accessToken, refreshToken } = response.data;
-
+                
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
 
@@ -55,8 +56,14 @@ api.interceptors.response.use(
                 originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                 return axios(originalRequest);
             } catch (error) {
-                console.log("Intercept Error: " + error.code =="ERR_BAD_REQUEST");
+                console.log("Intercept Error: " + error.code);
                 // Handle refresh token error or redirect to login
+                if (error.code == "ERR_BAD_REQUEST") {
+                    console.log("Logging out..");
+                    Logout();
+                }
+                return Promise.reject(error);
+
                 
             }
         }

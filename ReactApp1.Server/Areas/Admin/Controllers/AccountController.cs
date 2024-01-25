@@ -19,14 +19,14 @@ namespace ReactApp1.Server.Areas.Admin.Controllers
             _authService = authService;
         }
         [HttpPost]
-        public async Task<IActionResult> Register( RegisterDTO registerDTO)
+        public async Task<IActionResult> Register(RegisterDTO registerDTO)
         {
 
             if (registerDTO == null)
             {
                 return BadRequest();
             }
-            var (status, msg) = await _authService.RegisterAsync( registerDTO, UserRole.Administrator);
+            var (status, msg) = await _authService.RegisterAsync(registerDTO, UserRole.Administrator);
             return Ok(new { status = status, msg = msg });
         }
         [HttpPost]
@@ -41,12 +41,13 @@ namespace ReactApp1.Server.Areas.Admin.Controllers
             var (accessToken, refreshToken) = await _authService.LoginAsync(loginDTO, cancellationToken.Token);
             if (String.IsNullOrEmpty(accessToken) || String.IsNullOrEmpty(refreshToken))
             {
-                return (Ok(new { status = false, msg="Invalid Login! Please Try again..." }));
+                return (Ok(new { status = false, msg = "Invalid Login! Please Try again..." }));
             }
-            return Ok(new { status=true,accessToken= accessToken, refreshToken= refreshToken });;
+            return Ok(new { status = true, accessToken = accessToken, refreshToken = refreshToken }); ;
 
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Refresh(RefreshTokenDTO refreshTokenDTO)
         {
@@ -55,7 +56,7 @@ namespace ReactApp1.Server.Areas.Admin.Controllers
                 return Unauthorized();
             }
 
-            var (accessToken,refreshToken, statusCode) =  await _authService.Refresh(refreshTokenDTO.AccessToken, refreshTokenDTO.RefreshToken);
+            var (accessToken, refreshToken, statusCode) = await _authService.Refresh(refreshTokenDTO.AccessToken, refreshTokenDTO.RefreshToken);
             if (statusCode == StatusCodes.Status401Unauthorized)
             {
                 return Unauthorized();
@@ -71,8 +72,9 @@ namespace ReactApp1.Server.Areas.Admin.Controllers
         [HttpDelete]
         public async Task<IActionResult> Revoke()
         {
+            Thread.Sleep(5000);
             var status = await _authService.Revoke();
-            return status==200 ? Ok() : Unauthorized();
+            return status == 200 ? Ok() : Unauthorized();
         }
     }
 }

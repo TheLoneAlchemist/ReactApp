@@ -7,6 +7,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Logout from './components/Logout';
 
+import Notify from './components/Notify';
 
 
 
@@ -19,6 +20,10 @@ function App() {
             {/*<button type="button" >Login</button>*/}
             {/*<button type="button" >Register</button>*/}
             {/*</div>*/}
+
+            <div>
+                <Notify/>
+            </div>
 
             <BrowserRouter>
                 <ul id="navlinks">

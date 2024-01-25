@@ -1,14 +1,18 @@
-import authService from "../services/auth.service";
+
 import { useEffect } from "react";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Notify from "./Notify";
+import authService from "../services/auth.service";
+
 
 const Login = () => {
 
     //if Already Logged in then redirect 
     const navigate = useNavigate();
     const token = localStorage.getItem("accessToken");
+    
     if (token!=null && token !="undefined") {
         useEffect(() => {
             navigate("/Dashboard");
@@ -29,16 +33,17 @@ const Login = () => {
     }
 
     function Login() {
+        
         authService.login(email, password)
             .then(res => {
                 if (res) {
-
+                    Notify();
                     navigate("/Dashboard");
 
                 }
 
             })
-            .catch(error => { console.log(error) })
+            .catch(error => { console.log(error+" :Login Error"); navigate("/Login"); })
 
     }
 

@@ -1,4 +1,6 @@
 import axios from "axios"
+import Notify from "../components/Notify";
+import api from "./interceptor";
 
 
 const API = "https://localhost:7139/Account/"
@@ -63,23 +65,35 @@ class AuthService {
                 if (res.data.status) {
 
                     if (res.data.accessToken) {
-                       // console.log(res.data.accessToken);
-                       // console.log(res.data.refreshToken);
+                        // console.log(res.data.accessToken);
+                        // console.log(res.data.refreshToken);
 
                         localStorage.setItem("accessToken", res.data.accessToken);
                         localStorage.setItem("refreshToken", res.data.refreshToken);
+                        Notify("success", "Login Successfully.")
                         return res.data.accessToken;
                     }
                 }
                 else {
                     console.log(res.data.msg);
+                    throw new Error(res.data.msg);
+
                 }
             })
             .catch(error => console.log(error))
 
     }
 
-    logout() { }
+    async logout() {
+        console.log("Revoking RToken");
+        return await api.delete(API + "Revoke")
+            .then(res => {
+                console.log("Revoking message: " + res);
+            }).catch(error => { console.log('Revoking Token Error: ' + error); return error; });
+
+    }
+
+
 
 
     register(firstname, lastname, email, password, confirmpassword) {
@@ -88,13 +102,13 @@ class AuthService {
 
         return axios.post(API + "Register",
             {
-                
-                    firstname,
-                    lastname,
-                    email,
-                    password,
-                    confirmpassword
-                
+
+                firstname,
+                lastname,
+                email,
+                password,
+                confirmpassword
+
             }
 
         ).then(res => {

@@ -11,6 +11,6 @@ namespace ReactApp1.Server.Models.Common
         public bool IsExpired { get; set; }
         public string? Token { get; set; }
         public bool IsRevoked { get; set; }
-        
+
     }
 }

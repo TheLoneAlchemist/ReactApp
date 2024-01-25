@@ -2,21 +2,30 @@ import { useState } from "react";
 import userService from "../services/user.service"
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import CircleLoader from "react-spinners/CircleLoader";
+
 
 
 const Dashboard = () => {
 
+    const custom = {
+        display: 'block',
+        margin: 'auto',
+    }
+
+    const color = '#36d7b7';
+    
     const navigate = useNavigate();
 
     let [data, setData] = useState([]);
-    let [isLoading, setLoading] = useState(true);
+    let [loading, setLoading] = useState(true);
     let [isError, setError] = useState(false)
     try {
 
         useEffect(() => {
             userService.adminDashboard()
                 .then(res => { setData(res.data); setLoading(false) })
-                .catch(error => { console.log(error);  setError(true) })
+                .catch(error => { console.log(error); setError(true); navigate("/Login") })
         }, [])
 
     } catch (e) {
@@ -28,8 +37,18 @@ const Dashboard = () => {
         return <div>Something went wrong! ... </div>
     }
 
-    if (isLoading) {
-        return <div> Loading... </div>
+    if (loading) {
+        return <div> Loading...
+            <CircleLoader color="#36d7b7"
+                color={color}
+                loading={loading}
+                cssOverride={custom}
+                size={150}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+            />
+
+        </div>
     }
 
     if (data.length < 1) {

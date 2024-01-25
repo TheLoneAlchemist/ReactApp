@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ReactApp1.Server.Data;
 using ReactApp1.Server.Interfaces;
-using ReactApp1.Server.Mappers;
 using ReactApp1.Server.Models.Common;
 using ReactApp1.Server.Services;
 using System.Text;
@@ -30,7 +29,7 @@ builder.Services.AddCors(options =>
         policy.AllowAnyMethod();
         policy.AllowAnyHeader();
         policy.SetIsOriginAllowed((host) => true);
-        
+
     });
 });
 
@@ -58,7 +57,7 @@ builder.Services.AddAuthentication(options =>
 
 .AddJwtBearer(options =>
 {
-    
+
     options.SaveToken = true;
     options.RequireHttpsMetadata = false; //going to be true
     options.TokenValidationParameters = new TokenValidationParameters
@@ -76,7 +75,7 @@ builder.Services.AddAuthentication(options =>
         OnAuthenticationFailed = async (context) =>
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.BackgroundColor= ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.White;
             Console.WriteLine(context.Result);
             Console.ResetColor();
             //throw new Exception("Auth Failed"); // remove
@@ -84,7 +83,7 @@ builder.Services.AddAuthentication(options =>
         OnTokenValidated = async (context) =>
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.BackgroundColor= ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.White;
             Console.WriteLine(context.Result);
             Console.ResetColor();
         }

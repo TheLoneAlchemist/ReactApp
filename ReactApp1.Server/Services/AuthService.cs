@@ -1,16 +1,11 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 using ReactApp1.Server.Constants;
 using ReactApp1.Server.Data;
 using ReactApp1.Server.Interfaces;
 using ReactApp1.Server.Models.Common;
 using ReactApp1.Server.Models.DTOs;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace ReactApp1.Server.Services
 {
@@ -97,17 +92,17 @@ namespace ReactApp1.Server.Services
                 RefreshToken refreshTkn;
                 if (userExist.RefreshToken is null)
                 {
-                    refreshTkn = new RefreshToken { CreatedAt = DateTime.UtcNow, Token=refreshToken, RefreshTokenExpiry=DateTime.UtcNow.AddMinutes(4)};
-                    userExist.RefreshToken=refreshTkn;
-                    
+                    refreshTkn = new RefreshToken { CreatedAt = DateTime.UtcNow, Token = refreshToken, RefreshTokenExpiry = DateTime.UtcNow.AddMinutes(4) };
+                    userExist.RefreshToken = refreshTkn;
+
                 }
                 else
                 {
                     refreshTkn = userExist.RefreshToken;
-                refreshTkn.RefreshTokenExpiry = DateTime.UtcNow.AddMinutes(4);
-                refreshTkn.Token = refreshToken;
+                    refreshTkn.RefreshTokenExpiry = DateTime.UtcNow.AddMinutes(4);
+                    refreshTkn.Token = refreshToken;
                     refreshTkn.IsRevoked = false;
-                    refreshTkn.CreatedAt=DateTime.UtcNow;
+                    refreshTkn.CreatedAt = DateTime.UtcNow;
                 }
 
                 await _userManager.UpdateAsync(userExist);
@@ -142,8 +137,8 @@ namespace ReactApp1.Server.Services
                               .Reference(z => z.RefreshToken)
                               .LoadAsync();
 
-                                                                        
-                                                                   
+
+
                 if (user is null
                     || user.IsDeleted == true
                     || user.RefreshToken.IsRevoked == true
